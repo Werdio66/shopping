@@ -7,7 +7,6 @@ import com._520.webhomework.commodity.dao.impl.CommodityDAOImpl;
 import com._520.webhomework.commodity.dao.impl.ShoppingDAOImpl;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.domain.Shopping;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,7 +60,7 @@ public class ShoppingServlet extends HttpServlet {
             req.getSession().setAttribute("SHOPPING_IN_SESSION",getShopping());
             req.getSession().setAttribute("PRICE_IN_SESSION",getAllPrice(getShopping()));
             // 跳转
-            req.getRequestDispatcher("/WEB-INF/jsp/shoppingCart.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/shopping/shoppingCart.jsp").forward(req,resp);
         }
     }
 
@@ -77,8 +76,8 @@ public class ShoppingServlet extends HttpServlet {
         shopping.setTotalPrice(shopping.getTotalPrice());
         System.out.println(shopping);
         dao.update(shopping,shopping.getName());
-        req.getSession().setAttribute("MSG_IN_SESSION","修改成功！");
-        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+        req.setAttribute("MSG_IN_SESSION","修改成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/shopping/success.jsp").forward(req,resp);
     }
 
     private void save(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -108,8 +107,8 @@ public class ShoppingServlet extends HttpServlet {
             System.out.println(shopping);
             dao.update(shopping,shopping.getName());
         }
-        req.getSession().setAttribute("MSG_IN_SESSION","加入购物车成功！");
-        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+        req.setAttribute("MSG_IN_SESSION","加入购物车成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/shopping/success.jsp").forward(req,resp);
 
     }
 
@@ -118,14 +117,14 @@ public class ShoppingServlet extends HttpServlet {
         String bookName = req.getParameter("bookName");
         System.out.println("bookname = " + bookName);
         dao.delete(bookName);
-        req.getSession().setAttribute("MSG_IN_SESSION","删除成功！");
-        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+        req.setAttribute("MSG_IN_SESSION","删除成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/shopping/success.jsp").forward(req,resp);
     }
 
     private void removeAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         dao.removeAll();
-        req.getSession().setAttribute("MSG_IN_SESSION","清空购物车成功！");
-        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+        req.setAttribute("MSG_IN_SESSION","清空购物车成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/shopping/success.jsp").forward(req,resp);
     }
     private static List<Shopping> getShopping(){
         return dao.listAll();

@@ -25,7 +25,7 @@
             <td>${shoppings.totalPrice}</td>
             <td>
                 <a href="/shopping?pwd=delete&bookName=${shoppings.name}">删除</a>
-                <a href="jsp/updateCount.jsp?bookName=${shoppings.name}&updateCount=${shoppings.count}">修改数量</a>
+                <a href="/jsp/updateCount.jsp?bookName=${shoppings.name}&updateCount=${shoppings.count}">修改数量</a>
             </td>
         </tr>
 

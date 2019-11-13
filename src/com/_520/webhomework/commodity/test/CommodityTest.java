@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class CRUDTest {
+public class CommodityTest {
     private CommodityDAOImpl commodityDAO = new CommodityDAOImpl();
     private Commodity commodity = null;
 

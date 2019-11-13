@@ -4,6 +4,7 @@
     <title>添加商品</title>
 </head>
 <body>
+    <h3>添加商品</h3>
     <form action="/commodity?pwd=save" method="post">
         商品名称：<input type="text" name="name"/>
         商品价格：<input type="text" name="price"/>

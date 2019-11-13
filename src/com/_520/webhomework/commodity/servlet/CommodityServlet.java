@@ -43,14 +43,14 @@ public class CommodityServlet extends HttpServlet {
         Commodity commodity = dao.getByName(bookName);
         if (commodity != null){
             req.getSession().setAttribute("MSG_IN_SESSION","商品已存在！");
-            req.getRequestDispatcher("/jsp/success.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
         }else {
             Commodity newCommodity = new Commodity();
             newCommodity.setPrice(price);
             newCommodity.setName(name);
             dao.save(newCommodity);
             req.getSession().setAttribute("MSG_IN_SESSION","保存成功！");
-            req.getRequestDispatcher("/jsp/success.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
         }
 
     }
@@ -65,13 +65,13 @@ public class CommodityServlet extends HttpServlet {
         System.out.println(commodity);
         if (commodity == null){
             req.getSession().setAttribute("MSG_IN_SESSION","修改失败！");
-            req.getRequestDispatcher("/jsp/success.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
         }else {
             commodity.setName(name);
             commodity.setPrice(price);
             dao.update(commodity,commodity.getId());
             req.getSession().setAttribute("MSG_IN_SESSION","修改成功！");
-            req.getRequestDispatcher("/jsp/success.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
         }
     }
 
@@ -79,7 +79,7 @@ public class CommodityServlet extends HttpServlet {
         String bookName = req.getParameter("bookName");
         dao.delete(dao.getByName(bookName).getId());
         req.getSession().setAttribute("MSG_IN_SESSION","删除成功！");
-        req.getRequestDispatcher("/jsp/success.jsp").forward(req,resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
     }
 
     private void listAll(HttpServletRequest req,HttpServletResponse resp) throws Exception {
@@ -88,10 +88,10 @@ public class CommodityServlet extends HttpServlet {
 
         if ("management".equals(pwd)){
             System.out.println("-------------management-----------------");
-            req.getRequestDispatcher("/jsp/backstage.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/backstage.jsp").forward(req,resp);
 
         }else {
-            req.getRequestDispatcher("/jsp/commodity.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/commodity/commodity.jsp").forward(req,resp);
 
         }
     }

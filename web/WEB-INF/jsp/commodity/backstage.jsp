@@ -8,8 +8,8 @@
         <h3>商品信息</h3>
         <table border="1" width="60%">
             <tr>
-                <a href="/jsp/saveCommodity.jsp">添加商品    </a>
-                <a href="/jsp/management.jsp">   返回管理页面</a>
+                <a href="/WEB-INF/jsp/commodity/saveCommodity.jsp">添加商品    </a>
+                <a href="/jsp/user/management.jsp">   返回管理页面</a>
             </tr>
             <tr>
                 <td>名称</td>
@@ -21,7 +21,7 @@
                     <td>${commoditys.name}</td>
                     <td>${commoditys.price}</td>
                     <td><a href="/commodity?pwd=delete&bookName=${commoditys.name}">删除商品</a>
-                    <a href="/jsp/updateCommodity.jsp?pwd=update&name=${commoditys.name}&price=${commoditys.price}">修改商品</a></td>
+                    <a href="/WEB-INF/jsp/commodity/updateCommodity.jsp?pwd=update&name=${commoditys.name}&price=${commoditys.price}">修改商品</a></td>
                 </tr>
 
             </c:forEach>
