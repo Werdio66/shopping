@@ -6,7 +6,7 @@
 <body>
 
     ${MSG_IN_SESSION}
-    <a href="/jsp/commodity.jsp">继续购物</a>
-    <a href="/shopping">查看购物车</a>
+    <a href="/commodity?pwd=management">查看商品列表</a>
+    <a href="/jsp/management.jsp">返回管理页面</a>
 </body>
 </html>

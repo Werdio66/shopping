@@ -5,10 +5,10 @@
     <title>购物车</title>
 </head>
 <body>
-
+    <h3>购物车</h3>
 <table border="1" width="60%">
     <tr>
-        <a href="/jsp/commodity.jsp">继续购物</a>
+        <a href="/commodity">去购物</a>
     </tr>
     <tr>
         <td>名称</td>
@@ -23,12 +23,19 @@
             <td>${shoppings.price}</td>
             <td>${shoppings.count}</td>
             <td>${shoppings.totalPrice}</td>
-            <td><a href="/settlement?name=${shoppings.name}">删除</a></td>
+            <td>
+                <a href="/shopping?pwd=delete&bookName=${shoppings.name}">删除</a>
+                <a href="jsp/updateCount.jsp?bookName=${shoppings.name}&updateCount=${shoppings.count}">修改数量</a>
+            </td>
         </tr>
 
     </c:forEach>
     <tr>
-<%--        <td>总价 : ${TOTAL_IN_SESSION}</td>--%>
+        <td>所有商品总价格</td>
+        <td></td>
+        <td></td>
+        <td>${PRICE_IN_SESSION}</td>
+        <td><a href="/shopping?pwd=removeAll">清空购物车</a> </td>
     </tr>
 </table>
 </body>

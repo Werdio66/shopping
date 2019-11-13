@@ -9,7 +9,8 @@
     <h3>商品列表</h3>
     <table border="1" width="60%">
         <tr>
-<%--            <a href="/jsp/commodity.jsp">继续购物</a>--%>
+            <a href="/shopping">查看购物车    </a>
+            <a href="/jsp/management.jsp">   返回管理页面</a>
         </tr>
         <tr>
             <td>名称</td>
@@ -24,9 +25,6 @@
             </tr>
 
         </c:forEach>
-        <tr>
-            <a href="/shopping">查看购物车</a>
-        </tr>
     </table>
 </body>
 </html>

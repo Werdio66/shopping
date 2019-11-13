@@ -36,22 +36,52 @@ public class ShoppingServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
         String pwd = req.getParameter("pwd");
-        System.out.println(pwd);
         if ("save".equals(pwd)){
             try {
                 this.save(req,resp);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return;
+        }else if ("delete".equals(pwd)){
+            try {
+                this.delete(req,resp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if ("removeAll".equals(pwd)){
+            try {
+                this.removeAll(req,resp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if ("update".equals(pwd)){
+            this.update(req,resp);
+        }else {
+            // 将list存入session
+            req.getSession().setAttribute("SHOPPING_IN_SESSION",getShopping());
+            req.getSession().setAttribute("PRICE_IN_SESSION",getAllPrice(getShopping()));
+            // 跳转
+            req.getRequestDispatcher("/WEB-INF/jsp/shoppingCart.jsp").forward(req,resp);
         }
-       // 将list存入session
-        req.getSession().setAttribute("SHOPPING_IN_SESSION",getShopping());
-        // 跳转
-        req.getRequestDispatcher("/WEB-INF/jsp/shoppingCart.jsp").forward(req,resp);
     }
 
-    protected void save(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 获取请求参数
+        String bookName = req.getParameter("bookName");
+        Shopping shopping = dao.getByName(bookName);
+        Integer updateCount = Integer.valueOf( req.getParameter("updateCount"));
+        System.out.println("name = " + bookName +"数量 = " + updateCount);
+        shopping.setName(shopping.getName());
+        shopping.setCount(updateCount);
+        shopping.setPrice(shopping.getPrice());
+        shopping.setTotalPrice(shopping.getTotalPrice());
+        System.out.println(shopping);
+        dao.update(shopping,shopping.getName());
+        req.getSession().setAttribute("MSG_IN_SESSION","修改成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+    }
+
+    private void save(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         // 获取请求参数
         String bookName = req.getParameter("bookName");
 
@@ -78,11 +108,35 @@ public class ShoppingServlet extends HttpServlet {
             System.out.println(shopping);
             dao.update(shopping,shopping.getName());
         }
+        req.getSession().setAttribute("MSG_IN_SESSION","加入购物车成功！");
         req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
 
     }
 
-        private static List<Shopping> getShopping(){
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        // 获取请求参数
+        String bookName = req.getParameter("bookName");
+        System.out.println("bookname = " + bookName);
+        dao.delete(bookName);
+        req.getSession().setAttribute("MSG_IN_SESSION","删除成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+    }
+
+    private void removeAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        dao.removeAll();
+        req.getSession().setAttribute("MSG_IN_SESSION","清空购物车成功！");
+        req.getRequestDispatcher("/WEB-INF/jsp/success.jsp").forward(req,resp);
+    }
+    private static List<Shopping> getShopping(){
         return dao.listAll();
+    }
+
+    private static Double getAllPrice(List<Shopping> list){
+        Double price = 0.0;
+        for (Shopping s:list
+             ) {
+            price += s.getTotalPrice();
+        }
+        return price;
     }
 }
