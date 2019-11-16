@@ -7,6 +7,12 @@
 </head>
 <body>
     <h3>商品列表</h3>
+
+    <form action="/commodity" method="post">
+        名称：<input type="text" name="name" value="">
+        价格：<input type="text" name="minPrice"> - <input type="text" name="maxPrice">
+              <input type="submit" value="查询" style="background-color: cadetblue">
+    </form>
     <table border="1" width="60%">
         <tr>
             <a href="/shopping">查看购物车    </a>

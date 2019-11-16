@@ -3,6 +3,8 @@ package com._520.webhomework.commodity.servlet;
 import com._520.webhomework.commodity.dao.ICommodityDAO;
 import com._520.webhomework.commodity.dao.impl.CommodityDAOImpl;
 import com._520.webhomework.commodity.domain.Commodity;
+import com._520.webhomework.commodity.query.CommodityQuery;
+import org.junit.platform.commons.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,10 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @WebServlet("/commodity")
 public class CommodityServlet extends HttpServlet {
     private static ICommodityDAO dao = new CommodityDAOImpl();
+    private CommodityQuery commodityQuery = new CommodityQuery();
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -84,7 +88,10 @@ public class CommodityServlet extends HttpServlet {
 
     private void listAll(HttpServletRequest req,HttpServletResponse resp) throws Exception {
         String pwd = req.getParameter("pwd");
-        req.getSession().setAttribute("COMMODITY_IN_SESSION",dao.listAll());
+
+        commodityQuery = new CommodityQuery();
+        this.setCommodityQuery(req,resp);
+        req.getSession().setAttribute("COMMODITY_IN_SESSION",dao.query(commodityQuery));
 
         if ("management".equals(pwd)){
             System.out.println("-------------management-----------------");
@@ -94,5 +101,25 @@ public class CommodityServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/jsp/commodity/commodity.jsp").forward(req,resp);
 
         }
+    }
+
+    private void setCommodityQuery(HttpServletRequest req, HttpServletResponse resq) throws UnsupportedEncodingException {
+
+        req.setCharacterEncoding("utf-8");
+        String name = req.getParameter("name");
+//        Double minPrice = Double.valueOf(req.getParameter("minPrice"));
+//        Double maxPrice = Double.valueOf(req.getParameter("maxPrice"));
+
+        if (StringUtils.isNotBlank(name)){
+            commodityQuery.setName(name);
+        }
+//        if (minPrice != null){
+//            commodityQuery.setMinPrice(minPrice);
+//        }
+//
+//        if (maxPrice != null){
+//            commodityQuery.setMaxPrice(maxPrice);
+//        }
+
     }
 }
