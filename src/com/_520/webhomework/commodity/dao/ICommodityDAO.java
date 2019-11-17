@@ -3,6 +3,7 @@ package com._520.webhomework.commodity.dao;
 import com._520.webhomework.commodity.domain.Brand;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.query.CommodityQuery;
+import com._520.webhomework.commodity.query.PageResult;
 
 import java.util.List;
 
@@ -24,8 +25,6 @@ public interface ICommodityDAO {
 
     Commodity get(Long id);
 
-    List<Commodity> listAll() throws Exception;
-
     Commodity getByName(String name);
 
     /**
@@ -35,5 +34,9 @@ public interface ICommodityDAO {
      */
     List<Commodity> query(CommodityQuery commodityQuery);
 
-    List<Commodity> getByBrand(String name);
+    Long getIdInBrand(String brandName);
+
+    Integer getTotalCount();
+
+    PageResult query(Integer curentPage, Integer pageSize);
 }

@@ -1,57 +1,48 @@
 package com._520.webhomework.commodity.query;
 
 import org.junit.platform.commons.util.StringUtils;
-import java.util.ArrayList;
-import java.util.List;
 
 // 查询条件
-public class CommodityQuery {
+public class CommodityQuery extends QueryObject {
 
-    private String name;
-    private Double minPrice;
-    private Double maxPrice;
-    private String brandName;
-    private List<Object> list = new ArrayList<>();
+    private String name;            // 按名称模糊查询
+    private Double minPrice;        // 最低价
+    private Double maxPrice;        // 最高价
+    private String brandName;       // 类型
+    private String keyword;         // 关键字查询
 
-
-    public List<Object> getParameters() {
-        return list;
-    }
-
-    public String getSql() {
-        StringBuilder sql = new StringBuilder("");
+    // 自定义查询
+    @Override
+    protected void cunstomizedQuery() {
         if (StringUtils.isNotBlank(name)){
-            sql.append(" AND commodity.name LIKE ?");
-            list.add("%" + name + "%");
+            super.addQuery("commodity.name LIKE ?","%" + name + "%");
         }
 
         if (minPrice != null){
-            sql.append(" AND price > ?");
-            list.add(minPrice);
+            super.addQuery("price > ?",minPrice);
         }
 
         if (maxPrice != null){
-            sql.append(" AND price < ?");
-            list.add(maxPrice);
+            super.addQuery("price < ?",maxPrice);
         }
 
         if (StringUtils.isNotBlank(brandName)){
-            sql.append(" AND brand.name = ?");
-            list.add(brandName);
+            super.addQuery("brand.name = ?",brandName);
         }
-        return sql.toString().replaceFirst("AND","WHERE");
+
+        if (StringUtils.isNotBlank(keyword)){
+            super.addQuery("(brand.name LIKE ? or commodity.name LIKE ?)",
+                    "%" + keyword + "%","%" + keyword + "%");
+        }
     }
 
 
-    @Override
-    public String toString() {
-        return "CommodityQuery{" +
-                "name='" + name + '\'' +
-                ", minPrice=" + minPrice +
-                ", maxPrice=" + maxPrice +
-                ", brandName='" + brandName + '\'' +
-                ", list=" + list +
-                '}';
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getBrandName() {

@@ -43,7 +43,8 @@ public class CommodityServlet extends HttpServlet {
         String name = req.getParameter("name");     // 新商品名称
         String bookName = req.getParameter("bookName");     // 原来商品名称
         Double price = Double.valueOf(req.getParameter("price"));   // 商品价格
-        System.out.println("name = " + name + "bookNmae = " +bookName+"price="+price);
+        String brandName = req.getParameter("brandName");
+        System.out.println("name = " + name + " bookName = " +bookName+" price="+price);
         Commodity commodity = dao.getByName(bookName);
         if (commodity != null){
             req.getSession().setAttribute("MSG_IN_SESSION","商品已存在！");
@@ -52,6 +53,7 @@ public class CommodityServlet extends HttpServlet {
             Commodity newCommodity = new Commodity();
             newCommodity.setPrice(price);
             newCommodity.setName(name);
+            newCommodity.setBrandName(brandName);
             dao.save(newCommodity);
             req.getSession().setAttribute("MSG_IN_SESSION","保存成功！");
             req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
@@ -64,6 +66,7 @@ public class CommodityServlet extends HttpServlet {
         String name = req.getParameter("name");     // 新商品名称
         String bookName = req.getParameter("bookName");     // 原来商品名称
         Double price = Double.valueOf(req.getParameter("price"));   // 商品价格
+        String brandName = req.getParameter("brandName");
         System.out.println("name = " + name + "bookNmae = " +bookName+"price="+price);
         Commodity commodity = dao.getByName(bookName);
         System.out.println(commodity);
@@ -73,6 +76,7 @@ public class CommodityServlet extends HttpServlet {
         }else {
             commodity.setName(name);
             commodity.setPrice(price);
+            commodity.setBrandName(brandName);
             dao.update(commodity,commodity.getId());
             req.getSession().setAttribute("MSG_IN_SESSION","修改成功！");
             req.getRequestDispatcher("/WEB-INF/jsp/commodity/success.jsp").forward(req,resp);
@@ -111,6 +115,7 @@ public class CommodityServlet extends HttpServlet {
         String minPrice = req.getParameter("minPrice");
         String maxPrice = req.getParameter("maxPrice");
         String brandName = req.getParameter("brandName");
+        String keyword = req.getParameter("keyword");
         System.out.println(brandName);
         if (StringUtils.isNotBlank(name)){
             commodityQuery.setName(name);
@@ -125,6 +130,10 @@ public class CommodityServlet extends HttpServlet {
 
         if (StringUtils.isNotBlank(brandName) && !brandName.equals("全部")){
             commodityQuery.setBrandName(brandName);
+        }
+
+        if (StringUtils.isNotBlank(keyword)){
+            commodityQuery.setKeyword(keyword);
         }
     }
 }

@@ -4,7 +4,6 @@ import com._520.webhomework.commodity.dao.impl.CommodityDAOImpl;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.query.CommodityQuery;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class CommodityTest {
@@ -14,28 +13,30 @@ public class CommodityTest {
     @Test
     void save(){
         commodity = new Commodity();
-        commodity.setName("手机");
-        commodity.setPrice(66D);
+        commodity.setName("java从入门到放弃");
+        commodity.setPrice(79D);
+        commodity.setBrandName("书");
         commodityDAO.save(commodity);
     }
 
     @Test
     void delete(){
 
-        commodityDAO.delete(7L);
+        commodityDAO.delete(14L);
     }
 
     @Test
     void update(){
         commodity = new Commodity();
-        commodity.setName("充电宝");
-        commodity.setPrice(66D);
-        commodityDAO.update(commodity,5L);
+        commodity.setName("java编程思想");
+        commodity.setPrice(99D);
+        commodity.setBrandName("书");
+        commodityDAO.update(commodity,12L);
     }
     @Test
     void listAll() throws Exception {
-        List<Commodity> list = commodityDAO.listAll();
-        System.out.println(list);
+//        List<Commodity> list = commodityDAO.listAll();
+//        System.out.println(list);
     }
 
     @Test
@@ -53,17 +54,17 @@ public class CommodityTest {
     @Test
     void query(){
         CommodityQuery commodityQuery = new CommodityQuery();
-//        commodityQuery.setName("手");
-//        commodityQuery.setMinPrice(100.0);
-//        commodityQuery.setMaxPrice(200.0);
+        commodityQuery.setName("手");
+        commodityQuery.setMinPrice(100.0);
+        commodityQuery.setMaxPrice(200.0);
         List<Commodity> list = commodityDAO.query(commodityQuery);
 
         list.forEach(System.out::println);
     }
 
+
     @Test
-    void getbyBrandname(){
-        List<Commodity> list = commodityDAO.getByBrand("其他");
-        list.forEach(System.out::println);
+    void getIdInBrand(){
+        System.out.println(commodityDAO.getIdInBrand("其他"));
     }
 }
