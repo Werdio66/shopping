@@ -1,6 +1,7 @@
 package com._520.webhomework.commodity.dao.impl;
 
 import com._520.webhomework.commodity.dao.ICommodityDAO;
+import com._520.webhomework.commodity.domain.Brand;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.query.CommodityQuery;
 import com._520.webhomework.commodity.util.JdbcTemplete;
@@ -41,7 +42,11 @@ public class CommodityDAOImpl implements ICommodityDAO {
     }
 
     public Commodity getByName(String name) {
-        String sql = "SELECT id,name,price FROM commodity WHERE name = ?";
+        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+                " FROM commodity JOIN brand " +
+                "ON brand.id = commodity.brand_id " +
+                "WHERE commodity.name = ?";
+        System.out.println(sql);
         List<Commodity> commoditys = JdbcTemplete.query(sql, (rs) -> {
             List<Commodity> list = new ArrayList<>();
             while (rs.next()){
@@ -50,6 +55,7 @@ public class CommodityDAOImpl implements ICommodityDAO {
                 commodity.setId(rs.getLong("id"));
                 commodity.setName(rs.getString("name"));
                 commodity.setPrice(rs.getDouble("price"));
+                commodity.setBrandName(rs.getString("brandName"));
             }
             return list;
         }, name);
@@ -61,7 +67,9 @@ public class CommodityDAOImpl implements ICommodityDAO {
 
         String newSql = commodityQuery.getSql();
         List<Object> parameters = commodityQuery.getParameters();
-        String sql = "SELECT id,name,price FROM commodity" + newSql;
+        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+                " FROM commodity JOIN brand" +
+                " ON brand.id = commodity.brand_id"  + newSql;
         System.out.println(sql);
         System.out.println(parameters);
         return JdbcTemplete.query(sql,(rs) ->{
@@ -72,9 +80,30 @@ public class CommodityDAOImpl implements ICommodityDAO {
                 commodity.setId(rs.getLong("id"));
                 commodity.setName(rs.getString("name"));
                 commodity.setPrice(rs.getDouble("price"));
+                commodity.setBrandName(rs.getString("brandName"));
             }
             return list;
         }, parameters.toArray());
+    }
+
+    @Override
+    public List<Commodity> getByBrand(String name) {
+        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+                     " FROM commodity JOIN brand" +
+                     " ON brand.id = commodity.brand_id" +
+                     " WHERE brand.name = ?" ;
+        return JdbcTemplete.query(sql,(rs) ->{
+            List<Commodity> list = new ArrayList<>();
+            while (rs.next()){
+                Commodity commodity = new Commodity();
+                list.add(commodity);
+                commodity.setId(rs.getLong("id"));
+                commodity.setName(rs.getString("name"));
+                commodity.setPrice(rs.getDouble("price"));
+                commodity.setBrandName(rs.getString("brandName"));
+            }
+            return list;
+        }, name);
     }
 
 

@@ -9,8 +9,15 @@
     <h3>商品列表</h3>
 
     <form action="/commodity" method="post">
-        名称：<input type="text" name="name" value="">
-        价格：<input type="text" name="minPrice"> - <input type="text" name="maxPrice">
+        名称：<input type="text" name="name" value="${commodityQuery.name}">
+        价格：<input type="text" name="minPrice" value="${commodityQuery.minPrice}"> -
+            <input type="text" name="maxPrice" value="${commodityQuery.maxPrice}">
+            <select name="brandName">
+                <option selected>全部</option>
+                <option>电子产品</option>
+                <option>书</option>
+                <option>其他</option>
+            </select>
               <input type="submit" value="查询" style="background-color: cadetblue">
     </form>
     <table border="1" width="60%">
@@ -21,12 +28,14 @@
         <tr>
             <td>名称</td>
             <td>单价</td>
+            <td>分类</td>
             <td>操作</td>
         </tr>
         <c:forEach items="${COMMODITY_IN_SESSION}" var="commoditys">
             <tr>
                 <td>${commoditys.name}</td>
                 <td>${commoditys.price}</td>
+                <td>${commoditys.brandName}</td>
                 <td><a href="/shopping?pwd=save&bookName=${commoditys.name}">加入购物车</a></td>
             </tr>
 

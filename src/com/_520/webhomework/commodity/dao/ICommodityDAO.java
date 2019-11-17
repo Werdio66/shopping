@@ -1,5 +1,6 @@
 package com._520.webhomework.commodity.dao;
 
+import com._520.webhomework.commodity.domain.Brand;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.query.CommodityQuery;
 
@@ -33,4 +34,6 @@ public interface ICommodityDAO {
      * @return                  Commodity对象
      */
     List<Commodity> query(CommodityQuery commodityQuery);
+
+    List<Commodity> getByBrand(String name);
 }

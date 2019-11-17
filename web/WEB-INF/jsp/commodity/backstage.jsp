@@ -14,12 +14,14 @@
             <tr>
                 <td>名称</td>
                 <td>单价</td>
+                <td>分类</td>
                 <td>操作</td>
             </tr>
             <c:forEach items="${COMMODITY_IN_SESSION}" var="commoditys">
                 <tr>
                     <td>${commoditys.name}</td>
                     <td>${commoditys.price}</td>
+                    <td>${commoditys.brandName}</td>
                     <td><a href="/commodity?pwd=delete&bookName=${commoditys.name}">删除商品</a>
                     <a href="/jsp/updateCommodity.jsp?pwd=update&name=${commoditys.name}&price=${commoditys.price}">修改商品</a></td>
                 </tr>

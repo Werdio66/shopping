@@ -40,7 +40,13 @@ public class CommodityTest {
 
     @Test
     void get(){
-        Commodity commodity = commodityDAO.get(2L);
+        Commodity commodity = commodityDAO.get(3L);
+        System.out.println(commodity);
+    }
+
+    @Test
+    void getByName(){
+        Commodity commodity = commodityDAO.getByName("手环");
         System.out.println(commodity);
     }
 
@@ -52,6 +58,12 @@ public class CommodityTest {
 //        commodityQuery.setMaxPrice(200.0);
         List<Commodity> list = commodityDAO.query(commodityQuery);
 
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    void getbyBrandname(){
+        List<Commodity> list = commodityDAO.getByBrand("其他");
         list.forEach(System.out::println);
     }
 }

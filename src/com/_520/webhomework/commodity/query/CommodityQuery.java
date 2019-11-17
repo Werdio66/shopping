@@ -10,7 +10,7 @@ public class CommodityQuery {
     private String name;
     private Double minPrice;
     private Double maxPrice;
-    private String brand;
+    private String brandName;
     private List<Object> list = new ArrayList<>();
 
 
@@ -21,7 +21,7 @@ public class CommodityQuery {
     public String getSql() {
         StringBuilder sql = new StringBuilder("");
         if (StringUtils.isNotBlank(name)){
-            sql.append(" AND name LIKE ?");
+            sql.append(" AND commodity.name LIKE ?");
             list.add("%" + name + "%");
         }
 
@@ -35,11 +35,12 @@ public class CommodityQuery {
             list.add(maxPrice);
         }
 
+        if (StringUtils.isNotBlank(brandName)){
+            sql.append(" AND brand.name = ?");
+            list.add(brandName);
+        }
         return sql.toString().replaceFirst("AND","WHERE");
     }
-
-
-
 
 
     @Override
@@ -48,8 +49,17 @@ public class CommodityQuery {
                 "name='" + name + '\'' +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
-                ", brand='" + brand + '\'' +
+                ", brandName='" + brandName + '\'' +
+                ", list=" + list +
                 '}';
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public String getName() {
@@ -76,11 +86,4 @@ public class CommodityQuery {
         this.maxPrice = maxPrice;
     }
 
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
 }

@@ -91,6 +91,7 @@ public class CommodityServlet extends HttpServlet {
 
         commodityQuery = new CommodityQuery();
         this.setCommodityQuery(req,resp);
+        req.setAttribute("commodityQuery",commodityQuery);
         req.getSession().setAttribute("COMMODITY_IN_SESSION",dao.query(commodityQuery));
 
         if ("management".equals(pwd)){
@@ -107,19 +108,23 @@ public class CommodityServlet extends HttpServlet {
 
         req.setCharacterEncoding("utf-8");
         String name = req.getParameter("name");
-//        Double minPrice = Double.valueOf(req.getParameter("minPrice"));
-//        Double maxPrice = Double.valueOf(req.getParameter("maxPrice"));
-
+        String minPrice = req.getParameter("minPrice");
+        String maxPrice = req.getParameter("maxPrice");
+        String brandName = req.getParameter("brandName");
+        System.out.println(brandName);
         if (StringUtils.isNotBlank(name)){
             commodityQuery.setName(name);
         }
-//        if (minPrice != null){
-//            commodityQuery.setMinPrice(minPrice);
-//        }
+        if (StringUtils.isNotBlank(minPrice)){
+            commodityQuery.setMinPrice(Double.valueOf(minPrice));
+        }
 //
-//        if (maxPrice != null){
-//            commodityQuery.setMaxPrice(maxPrice);
-//        }
+        if (StringUtils.isNotBlank(maxPrice)){
+            commodityQuery.setMaxPrice(Double.valueOf(maxPrice));
+        }
 
+        if (StringUtils.isNotBlank(brandName) && !brandName.equals("全部")){
+            commodityQuery.setBrandName(brandName);
+        }
     }
 }

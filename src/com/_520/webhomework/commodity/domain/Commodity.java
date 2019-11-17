@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 public class Commodity {
     private Long id;
     private String name;            // 商品名称
-    private Double price;       // 商品单价
+    private Double price;           // 商品单价
+    private String brandName;       // 商品名称
+
 
     @Override
     public String toString() {
@@ -14,7 +16,16 @@ public class Commodity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
+                ", brandName='" + brandName + '\'' +
                 '}';
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public Long getId() {
