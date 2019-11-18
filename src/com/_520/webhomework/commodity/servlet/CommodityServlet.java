@@ -91,12 +91,19 @@ public class CommodityServlet extends HttpServlet {
     }
 
     private void listAll(HttpServletRequest req,HttpServletResponse resp) throws Exception {
+        req.setCharacterEncoding("utf-8");
         String pwd = req.getParameter("pwd");
-
+        String scurentPage = req.getParameter("courentPage");
+        Integer curentPage = 1;
         commodityQuery = new CommodityQuery();
         this.setCommodityQuery(req,resp);
         req.setAttribute("commodityQuery",commodityQuery);
-        req.getSession().setAttribute("COMMODITY_IN_SESSION",dao.query(commodityQuery));
+        if (StringUtils.isNotBlank(scurentPage)){
+            curentPage = Integer.valueOf(scurentPage);
+        }
+        System.out.println("scurentPage = " + scurentPage);
+        System.out.println("curentPage = " + curentPage);
+        req.getSession().setAttribute("pageResult",dao.query(commodityQuery));
 
         if ("management".equals(pwd)){
             System.out.println("-------------management-----------------");
@@ -116,7 +123,15 @@ public class CommodityServlet extends HttpServlet {
         String maxPrice = req.getParameter("maxPrice");
         String brandName = req.getParameter("brandName");
         String keyword = req.getParameter("keyword");
+        String scurentPage = req.getParameter("courentPage");
         System.out.println(brandName);
+
+        Integer curentPage = 1;
+        if (StringUtils.isNotBlank(scurentPage)){
+            curentPage = Integer.valueOf(scurentPage);
+            commodityQuery.setCurentPage(curentPage);
+        }
+        commodityQuery.setPageSize(5);
         if (StringUtils.isNotBlank(name)){
             commodityQuery.setName(name);
         }

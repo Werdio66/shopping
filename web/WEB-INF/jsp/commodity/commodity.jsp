@@ -32,7 +32,7 @@
             <td>分类</td>
             <td>操作</td>
         </tr>
-        <c:forEach items="${COMMODITY_IN_SESSION}" var="commoditys">
+        <c:forEach items="${pageResult.listDates}" var="commoditys">
             <tr>
                 <td>${commoditys.name}</td>
                 <td>${commoditys.price}</td>
@@ -41,6 +41,15 @@
             </tr>
 
         </c:forEach>
+    <tr>
+        <td colspan="4" align="center">
+            <a href="/commodity?courentPage=1"> 首页 </a>
+            <a href="/commodity?courentPage=${pageResult.prevPage}"> 上一页 </a>
+            <a href="/commodity?courentPage=${pageResult.nextPage}"> 下一页 </a>
+            <a href="/commodity?courentPage=${pageResult.totalPage}"> 尾页 </a>
+            当前第${pageResult.courentPage} /${pageResult.totalPage}页，一共${pageResult.totalCount}条数据
+        </td>
+    </tr>
     </table>
 </body>
 </html>

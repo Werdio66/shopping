@@ -53,13 +53,13 @@ public class CommodityTest {
 
     @Test
     void query(){
-        CommodityQuery commodityQuery = new CommodityQuery();
-        commodityQuery.setName("手");
-        commodityQuery.setMinPrice(100.0);
-        commodityQuery.setMaxPrice(200.0);
-        List<Commodity> list = commodityDAO.query(commodityQuery);
-
-        list.forEach(System.out::println);
+//        CommodityQuery commodityQuery = new CommodityQuery();
+//        commodityQuery.setName("手");
+//        commodityQuery.setMinPrice(100.0);
+//        commodityQuery.setMaxPrice(200.0);
+//        List<Commodity> list = commodityDAO.query(commodityQuery);
+//
+//        list.forEach(System.out::println);
     }
 
 

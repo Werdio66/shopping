@@ -6,12 +6,14 @@ import java.util.List;
 
 public class QueryObject {
 
+    private Integer curentPage = 1;
+    private Integer pageSize = 5;
+
     private List<Object> paramers = new ArrayList<>();
     private List<String> sqls = new ArrayList<>();
 
     public String getSql(){
         StringBuilder sql = new StringBuilder("");
-
         this.cunstomizedQuery();
 
         if (sqls.size() == 0)
@@ -30,8 +32,31 @@ public class QueryObject {
     protected void cunstomizedQuery() {
     }
 
+    public void add(Integer integer){
+        paramers.add(integer);
+    }
     protected void addQuery(String sqls, Object ... paramers){
         this.sqls.add(sqls);
         this.paramers.addAll(Arrays.asList(paramers));
+    }
+
+
+
+
+
+    public void setCurentPage(Integer curentPage) {
+        this.curentPage = curentPage;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getCurentPage() {
+        return curentPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
     }
 }

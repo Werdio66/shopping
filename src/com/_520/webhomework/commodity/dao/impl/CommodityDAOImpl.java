@@ -59,18 +59,16 @@ public class CommodityDAOImpl implements ICommodityDAO {
         return commoditys.size() == 1 ? commoditys.get(0) : null;
     }
 
-    @Override
-    public List<Commodity> query(CommodityQuery commodityQuery) {
-
-        String newSql = commodityQuery.getSql();
-        List<Object> parameters = commodityQuery.getParamers();
-        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
-                " FROM commodity JOIN brand" +
-                " ON brand.id = commodity.brand_id" + newSql;
-        System.out.println(sql);
-        System.out.println(parameters);
-        return JdbcTemplete.query(sql,new CommodityRowMapper(), parameters.toArray());
-    }
+//    @Override
+//    public List<Commodity> query(CommodityQuery commodityQuery) {
+//
+//        String newSql = commodityQuery.getSql();
+//        List<Object> parameters = commodityQuery.getParamers();
+//        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+//                " FROM commodity JOIN brand" +
+//                " ON brand.id = commodity.brand_id" + newSql;
+//        return JdbcTemplete.query(sql,new CommodityRowMapper(), parameters.toArray());
+//    }
 
 
     public Integer getTotalCount(){
@@ -88,35 +86,37 @@ public class CommodityDAOImpl implements ICommodityDAO {
     }
 
     @Override
-    public PageResult query(Integer curentPage, Integer pageSize) {
-        String countSql = "SELECT COUNT(id) FROM commodity";
+    public PageResult query(CommodityQuery commodityQuery) {
+        String newSql = commodityQuery.getSql();
+        List<Object> parameters = commodityQuery.getParamers();
+        String countSql = "SELECT COUNT(*) FROM commodity" + newSql;
         // 查询结果总数
         Integer totalCount = JdbcTemplete.query(countSql,(rs) -> {
             if (rs.next()){
-                return rs.getLong("COUNT(id)");
+                return rs.getLong("COUNT(*)");
             }
             return 0;
-        }).intValue();
+        },parameters.toArray()).intValue();
 
         // 没有数据
         if (totalCount == 0){
-            return new PageResult(1,pageSize, Collections.EMPTY_LIST,totalCount);
+            return new PageResult(1,commodityQuery.getPageSize(), Collections.EMPTY_LIST,totalCount);
         }
         // 查询结果集
-        String sql = "SELECT * FROM commodity LIMIT ?,?";
-        List<Object> query = JdbcTemplete.query(sql, (rs) -> {
-            List<Object> list = new ArrayList<>();
-            while (rs.next()) {
-                Commodity commodity = new Commodity();
-                list.add(commodity);
-                commodity.setId(rs.getLong("id"));
-                commodity.setName(rs.getString("name"));
-                commodity.setPrice(rs.getDouble("price"));
-//                commodity.setBrandName(rs.getString("brandName"));
-            }
-            return list;
-        }, curentPage, pageSize);
-        return new PageResult(curentPage,pageSize,query,totalCount);
+
+        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+                " FROM commodity JOIN brand" +
+                " ON brand.id = commodity.brand_id " + newSql +
+                " LIMIT ?,?";
+//        commodityQuery.setCurentPage(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
+//        commodityQuery.setPageSize(commodityQuery.getPageSize());
+
+        commodityQuery.add(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
+        commodityQuery.add(commodityQuery.getPageSize());
+        List<Commodity> query = JdbcTemplete.query(sql,new CommodityRowMapper(),parameters.toArray());
+        System.out.println(sql);
+        System.out.println(parameters);
+        return new PageResult(commodityQuery.getCurentPage(),commodityQuery.getPageSize(),query,totalCount);
     }
 
 
