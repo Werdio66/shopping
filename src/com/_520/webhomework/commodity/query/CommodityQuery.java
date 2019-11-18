@@ -30,11 +30,11 @@ public class CommodityQuery extends QueryObject {
         }
 
         if (StringUtils.isNotBlank(brandName)){
-            super.addQuery("brand.name = ?",brandName);
+            super.addQuery("brandName = ?",brandName);
         }
 
         if (StringUtils.isNotBlank(keyword)){
-            super.addQuery("(brand.name LIKE ? or commodity.name LIKE ?)",
+            super.addQuery("(brandName LIKE ? or commodity.name LIKE ?)",
                     "%" + keyword + "%","%" + keyword + "%");
         }
     }

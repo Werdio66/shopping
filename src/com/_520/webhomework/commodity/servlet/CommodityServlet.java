@@ -17,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 @WebServlet("/commodity")
 public class CommodityServlet extends HttpServlet {
     private static ICommodityDAO dao = new CommodityDAOImpl();
-    private CommodityQuery commodityQuery = new CommodityQuery();
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -93,16 +92,17 @@ public class CommodityServlet extends HttpServlet {
     private void listAll(HttpServletRequest req,HttpServletResponse resp) throws Exception {
         req.setCharacterEncoding("utf-8");
         String pwd = req.getParameter("pwd");
-        String scurentPage = req.getParameter("courentPage");
-        Integer curentPage = 1;
-        commodityQuery = new CommodityQuery();
-        this.setCommodityQuery(req,resp);
-        req.setAttribute("commodityQuery",commodityQuery);
-        if (StringUtils.isNotBlank(scurentPage)){
-            curentPage = Integer.valueOf(scurentPage);
+
+        String spageSize = req.getParameter("pageSize");
+        System.out.println("每页多少数据："+spageSize);
+
+        CommodityQuery commodityQuery = new CommodityQuery();
+        if (StringUtils.isNotBlank(spageSize)){
+            commodityQuery.setPageSize(Integer.valueOf(spageSize));
         }
-        System.out.println("scurentPage = " + scurentPage);
-        System.out.println("curentPage = " + curentPage);
+        this.setCommodityQuery(commodityQuery,req,resp);
+        req.setAttribute("commodityQuery",commodityQuery);
+        System.out.println("设置后"+commodityQuery.getPageSize());
         req.getSession().setAttribute("pageResult",dao.query(commodityQuery));
 
         if ("management".equals(pwd)){
@@ -115,7 +115,7 @@ public class CommodityServlet extends HttpServlet {
         }
     }
 
-    private void setCommodityQuery(HttpServletRequest req, HttpServletResponse resq) throws UnsupportedEncodingException {
+    private void setCommodityQuery(CommodityQuery commodityQuery,HttpServletRequest req, HttpServletResponse resq) throws UnsupportedEncodingException {
 
         req.setCharacterEncoding("utf-8");
         String name = req.getParameter("name");
@@ -124,14 +124,14 @@ public class CommodityServlet extends HttpServlet {
         String brandName = req.getParameter("brandName");
         String keyword = req.getParameter("keyword");
         String scurentPage = req.getParameter("courentPage");
-        System.out.println(brandName);
+
 
         Integer curentPage = 1;
+
         if (StringUtils.isNotBlank(scurentPage)){
             curentPage = Integer.valueOf(scurentPage);
             commodityQuery.setCurentPage(curentPage);
         }
-        commodityQuery.setPageSize(5);
         if (StringUtils.isNotBlank(name)){
             commodityQuery.setName(name);
         }

@@ -108,12 +108,11 @@ public class CommodityDAOImpl implements ICommodityDAO {
                 " FROM commodity JOIN brand" +
                 " ON brand.id = commodity.brand_id " + newSql +
                 " LIMIT ?,?";
-//        commodityQuery.setCurentPage(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
-//        commodityQuery.setPageSize(commodityQuery.getPageSize());
 
-        commodityQuery.add(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
-        commodityQuery.add(commodityQuery.getPageSize());
+        commodityQuery.getParamers().add(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
+        commodityQuery.getParamers().add(commodityQuery.getPageSize());
         List<Commodity> query = JdbcTemplete.query(sql,new CommodityRowMapper(),parameters.toArray());
+        System.out.println("commodityQuery.getPageSize() = " + commodityQuery.getPageSize());
         System.out.println(sql);
         System.out.println(parameters);
         return new PageResult(commodityQuery.getCurentPage(),commodityQuery.getPageSize(),query,totalCount);
