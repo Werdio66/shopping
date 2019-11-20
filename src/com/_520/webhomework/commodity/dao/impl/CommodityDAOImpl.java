@@ -89,11 +89,14 @@ public class CommodityDAOImpl implements ICommodityDAO {
     public PageResult query(CommodityQuery commodityQuery) {
         String newSql = commodityQuery.getSql();
         List<Object> parameters = commodityQuery.getParamers();
-        String countSql = "SELECT COUNT(*) FROM commodity" + newSql;
+        String countSql = "SELECT COUNT(commodity.id)" +
+                " FROM commodity JOIN brand" +
+                " ON brand.id = commodity.brand_id " + newSql;
         // 查询结果总数
+        System.out.println(countSql);
         Integer totalCount = JdbcTemplete.query(countSql,(rs) -> {
             if (rs.next()){
-                return rs.getLong("COUNT(*)");
+                return rs.getLong("COUNT(commodity.id)");
             }
             return 0;
         },parameters.toArray()).intValue();
@@ -104,7 +107,7 @@ public class CommodityDAOImpl implements ICommodityDAO {
         }
         // 查询结果集
 
-        String sql = "SELECT commodity.id,commodity.name,price,brand.name brandName" +
+        String sql = "SELECT commodity.id,commodity.name,price,brand.name" +
                 " FROM commodity JOIN brand" +
                 " ON brand.id = commodity.brand_id " + newSql +
                 " LIMIT ?,?";
@@ -112,7 +115,6 @@ public class CommodityDAOImpl implements ICommodityDAO {
         commodityQuery.getParamers().add(((commodityQuery.getCurentPage() - 1)) * commodityQuery.getPageSize());
         commodityQuery.getParamers().add(commodityQuery.getPageSize());
         List<Commodity> query = JdbcTemplete.query(sql,new CommodityRowMapper(),parameters.toArray());
-        System.out.println("commodityQuery.getPageSize() = " + commodityQuery.getPageSize());
         System.out.println(sql);
         System.out.println(parameters);
         return new PageResult(commodityQuery.getCurentPage(),commodityQuery.getPageSize(),query,totalCount);
@@ -130,7 +132,7 @@ public class CommodityDAOImpl implements ICommodityDAO {
                 commodity.setId(rs.getLong("id"));
                 commodity.setName(rs.getString("name"));
                 commodity.setPrice(rs.getDouble("price"));
-                commodity.setBrandName(rs.getString("brandName"));
+                commodity.setBrandName(rs.getString("brand.name"));
             }
             return list;
         };

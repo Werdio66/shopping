@@ -49,7 +49,6 @@ public class QueryObject {
     }
 
     public void setPageSize(Integer pageSize) {
-        System.out.println("pageSize66 = "+pageSize);
         this.pageSize = pageSize;
     }
 

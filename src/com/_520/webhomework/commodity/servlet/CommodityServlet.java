@@ -93,16 +93,11 @@ public class CommodityServlet extends HttpServlet {
         req.setCharacterEncoding("utf-8");
         String pwd = req.getParameter("pwd");
 
-        String spageSize = req.getParameter("pageSize");
-        System.out.println("每页多少数据："+spageSize);
-
         CommodityQuery commodityQuery = new CommodityQuery();
-        if (StringUtils.isNotBlank(spageSize)){
-            commodityQuery.setPageSize(Integer.valueOf(spageSize));
-        }
+
         this.setCommodityQuery(commodityQuery,req,resp);
+
         req.setAttribute("commodityQuery",commodityQuery);
-        System.out.println("设置后"+commodityQuery.getPageSize());
         req.getSession().setAttribute("pageResult",dao.query(commodityQuery));
 
         if ("management".equals(pwd)){
@@ -127,7 +122,11 @@ public class CommodityServlet extends HttpServlet {
 
 
         Integer curentPage = 1;
+        String spageSize = req.getParameter("pageSize");
 
+        if (StringUtils.isNotBlank(spageSize)){
+            commodityQuery.setPageSize(Integer.valueOf(spageSize));
+        }
         if (StringUtils.isNotBlank(scurentPage)){
             curentPage = Integer.valueOf(scurentPage);
             commodityQuery.setCurentPage(curentPage);
@@ -145,6 +144,7 @@ public class CommodityServlet extends HttpServlet {
 
         if (StringUtils.isNotBlank(brandName) && !brandName.equals("全部")){
             commodityQuery.setBrandName(brandName);
+            System.out.println(brandName);
         }
 
         if (StringUtils.isNotBlank(keyword)){
