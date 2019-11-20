@@ -8,7 +8,8 @@
 <body>
 
 <script>
-    function go() {
+    function go(pageNo) {
+        document.getElementById("pageNumber").value = pageNo;
         document.forms[0].submit();
     }
 </script>
@@ -49,22 +50,22 @@
         </c:forEach>
     <tr>
         <td colspan="4" align="center">
-            <a href="/commodity?courentPage=1"> 首页 </a>
-            <a href="/commodity?courentPage=${pageResult.prevPage}"> 上一页 </a>
-            <a href="/commodity?courentPage=${pageResult.nextPage}"> 下一页 </a>
+            <a href="javascript:go(1)"> 首页 </a>
+            <a href="javascript:go(${pageResult.prevPage})"> 上一页 </a>
+            <a href="javascript:go(${pageResult.nextPage})"> 下一页 </a>
             <c:forEach begin="${pageResult.beginIndex}" end="${pageResult.endIndex}" var="pageNumber">
                 <c:if test="${pageNumber != pageResult.courentPage}">
-                    <a href="/commodity?courentPage=${pageNumber}">${pageNumber}</a>
+                    <a href="javascript:go(${pageNumber})">${pageNumber}</a>
                 </c:if>
                 <c:if test="${pageNumber == pageResult.courentPage}">
                     <span style="font-weight: bold">${pageNumber}</span>
 
                 </c:if>
             </c:forEach>
-            <a href="/commodity?courentPage=${pageResult.totalPage}"> 尾页 </a>
+            <a href="javascript:go(${pageResult.totalPage})"> 尾页 </a>
             当前第${pageResult.courentPage} /${pageResult.totalPage}页，一共${pageResult.totalCount}条数据
 
-            跳转到 <input type="number" style="width: 45px" min="1" max="${pageResult.totalPage}"
+            跳转到 <input type="number" id="pageNumber" style="width: 45px" min="1" max="${pageResult.totalPage}"
                        value="${pageResult.courentPage}" name="courentPage">页
             <input type="button" value="GO" onclick="go();">
 
