@@ -2,12 +2,10 @@ package com._520.webhomework.commodity.dao.impl;
 
 import com._520.webhomework.commodity.dao.ICommodityDAO;
 import com._520.webhomework.commodity.dao.RowMapper;
-import com._520.webhomework.commodity.domain.Brand;
 import com._520.webhomework.commodity.domain.Commodity;
 import com._520.webhomework.commodity.query.CommodityQuery;
 import com._520.webhomework.commodity.query.PageResult;
 import com._520.webhomework.commodity.util.JdbcTemplete;
-
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
