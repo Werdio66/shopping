@@ -32,11 +32,11 @@ public interface ICommodityDAO {
      * @param commodityQuery    查询的条件
      * @return                  Commodity对象
      */
-    List<Commodity> query(CommodityQuery commodityQuery);
+//    List<Commodity> query(CommodityQuery commodityQuery);
 
     Long getIdInBrand(String brandName);
 
     Integer getTotalCount();
 
-    PageResult query(Integer curentPage, Integer pageSize);
+    PageResult query(CommodityQuery commodityQuery);
 }

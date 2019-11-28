@@ -11,9 +11,12 @@ public class CommodityQuery extends QueryObject {
     private String brandName;       // 类型
     private String keyword;         // 关键字查询
 
+
+
     // 自定义查询
     @Override
     protected void cunstomizedQuery() {
+
         if (StringUtils.isNotBlank(name)){
             super.addQuery("commodity.name LIKE ?","%" + name + "%");
         }
@@ -35,6 +38,8 @@ public class CommodityQuery extends QueryObject {
                     "%" + keyword + "%","%" + keyword + "%");
         }
     }
+
+
 
 
     public String getKeyword() {

@@ -6,6 +6,13 @@
     <title>商品表</title>
 </head>
 <body>
+
+<script>
+    function go(pageNo) {
+        document.getElementById("pageNumber").value = pageNo;
+        document.forms[0].submit();
+    }
+</script>
 <h3>按条件查询</h3>
 <form action="/commodity" method="post">
     名称：<input type="text" name="name" value="${commodityQuery.name}">
@@ -19,7 +26,7 @@
             </select>
     关键字：<input type="text" name="keyword" value="${commodityQuery.keyword}" placeholder="商品名称或者商品类型">
     <input type="submit" value="查询" style="background-color: cadetblue">
-</form>
+
 <h3>商品列表</h3>
 <table border="1" width="60%">
         <tr>
@@ -32,7 +39,7 @@
             <td>分类</td>
             <td>操作</td>
         </tr>
-        <c:forEach items="${COMMODITY_IN_SESSION}" var="commoditys">
+        <c:forEach items="${pageResult.listDates}" var="commoditys">
             <tr>
                 <td>${commoditys.name}</td>
                 <td>${commoditys.price}</td>
@@ -41,6 +48,35 @@
             </tr>
 
         </c:forEach>
+    <tr>
+        <td colspan="4" align="center">
+            <a href="javascript:go(1)"> 首页 </a>
+            <a href="javascript:go(${pageResult.prevPage})"> 上一页 </a>
+            <a href="javascript:go(${pageResult.nextPage})"> 下一页 </a>
+            <c:forEach begin="${pageResult.beginIndex}" end="${pageResult.endIndex}" var="pageNumber">
+                <c:if test="${pageNumber != pageResult.courentPage}">
+                    <a href="javascript:go(${pageNumber})">${pageNumber}</a>
+                </c:if>
+                <c:if test="${pageNumber == pageResult.courentPage}">
+                    <span style="font-weight: bold">${pageNumber}</span>
+
+                </c:if>
+            </c:forEach>
+            <a href="javascript:go(${pageResult.totalPage})"> 尾页 </a>
+            当前第${pageResult.courentPage} /${pageResult.totalPage}页，一共${pageResult.totalCount}条数据
+
+            跳转到 <input type="number" id="pageNumber" style="width: 45px" min="1" max="${pageResult.totalPage}"
+                       value="${pageResult.courentPage}" name="courentPage">页
+            <input type="button" value="GO" onclick="go();">
+
+            每页<select name="pageSize" onchange="go();">
+            <c:forEach items="${pageResult.items}" var="item">
+                <option ${item == pageResult.pageSize ? "selected" : ""}>${item}</option>
+            </c:forEach>
+        </select>条
+        </td>
+    </tr>
     </table>
+</form>
 </body>
 </html>
